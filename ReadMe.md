@@ -1,6 +1,7 @@
 # Zero
-[![Build Status](https://travis-ci.com/Cycling74/min-devkit.svg?token=GAmnsUEo9aYasSF5pz8q&branch=master)](https://travis-ci.com/Cycling74/min-devkit)
-[![Build status](https://ci.appveyor.com/api/projects/status/0koqc3l3qyfu0l8b/branch/master?svg=true)](https://ci.appveyor.com/project/c74/min-devkit/branch/master)
+[![Build Status](https://travis-ci.com/Cycling74/zero.svg?token=GAmnsUEo9aYasSF5pz8q&branch=master)](https://travis-ci.com/Cycling74/zero)[![Build status](https://ci.appveyor.com/api/projects/status/fv9ln8f036vnju3o/branch/master?svg=true)](https://ci.appveyor.com/project/c74/zero/branch/master)
+
+
 
 Zero-configuration networking for Max.
 
@@ -62,4 +63,3 @@ See the [GitHub Contributor Graph](https://github.com/Cycling74/zero/graphs/cont
 
 For support, please use the issue tracker at:
 https://github.com/Cycling74/zero/issues
-
