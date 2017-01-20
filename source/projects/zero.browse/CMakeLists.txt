@@ -9,20 +9,24 @@ include(${C74_MIN_API_DIR}/script/min-pretarget.cmake)
 #############################################################
 
 
-include_directories( 
+include_directories(
 	"${C74_INCLUDES}"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../zeroconf"
 )
 
+#set(ZEROCONF_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/../zeroconf")
+file(GLOB_RECURSE ZEROCONF_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/../zeroconf/*.h")
 
 set( SOURCE_FILES
 	${PROJECT_NAME}.cpp
 )
 
 
-add_library( 
-	${PROJECT_NAME} 
+add_library(
+	${PROJECT_NAME}
 	MODULE
 	${SOURCE_FILES}
+	${ZEROCONF_INCLUDES}
 )
 
 
