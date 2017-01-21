@@ -4,46 +4,10 @@
 /// @author		Timothy Place
 ///	@license	Usage of this file and its contents is governed by the MIT License
 
-#include "c74_min.h"
-#include "dns_sd.h"
-
-using namespace c74::min;
-
-const double k_poll_rate = 100;
-
-class zero_base {
-public:
-	virtual void update(const atoms& args) = 0;
-};
+#include "../zero.h"
 
 
 void DNSSD_API dns_service_browse_reply(DNSServiceRef, DNSServiceFlags, uint32_t, DNSServiceErrorType, const char*, const char*, const char*, void*);
-
-
-class dns_service {
-public:
-	dns_service(const symbol& domain, const symbol& type, const symbol& name)
-	: m_domain { domain }
-	, m_type { type }
-	, m_name { name }
-	{}
-
-
-	symbol name() {
-		return m_name;
-	}
-
-
-	inline friend bool operator == (dns_service& a, const dns_service& b) {
-		return a.m_domain == b.m_domain && a.m_type == b.m_type && a.m_name == b.m_name;
-	}
-
-
-private:
-	symbol m_domain;
-	symbol m_type;
-	symbol m_name;
-};
 
 
 class dns_service_browser {
@@ -69,7 +33,6 @@ public:
 	~dns_service_browser() {
 		if (m_client)
 			DNSServiceRefDeallocate(m_client);
-		m_client = nullptr;
 	}
 
 
@@ -155,7 +118,7 @@ public:
 	MIN_DESCRIPTION { "Browse available services published using ZeroConf" };
 	MIN_TAGS		{ "network" };
 	MIN_AUTHOR		{ "Cycling '74" };
-	MIN_RELATED		{ "udpsend, udpreceive" };
+	MIN_RELATED		{ "zero.announce, udpsend, udpreceive" };
 	
 	inlet<>		input	{ this, "(bang) refresh the listing of services" };
 	outlet<>	output	{ this, "(list) a list of available services" };
@@ -168,17 +131,18 @@ public:
 	}
 
 
+	~zero_browse() {
+		delete m_dns_service_browser;
+	}
+
+
 	attribute<symbol> type { this, "type", "_http._tcp",
-		description {
-			"Type of service. "
-		}
+		description { "Type of service. " }
 	};
 
 
 	attribute<symbol> domain { this, "domain", "local",
-		description {
-			"Domain for the service. The name 'local' is reserved for ZeroConf usage. "
-		},
+		description { "Domain for the service. The name 'local' is reserved for ZeroConf usage. " }
 	};
 
 
@@ -221,6 +185,7 @@ public:
 
 private:
 	dns_service_browser* m_dns_service_browser = nullptr;
+
 };
 
 
