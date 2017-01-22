@@ -45,7 +45,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 180.0, 440.0, 136.0, 20.0 ],
-					"presentation_rect" : [ 145.0, 423.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "dns-sd -B _osc._udp"
 				}
@@ -59,7 +58,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 145.0, 385.0, 282.0, 50.0 ],
-					"presentation_rect" : [ 131.0, 399.0, 0.0, 0.0 ],
 					"style" : "",
 					"text" : "4. On the Mac you can also use the dns-sd program in the Terminal to browse for this service with the following command:"
 				}
@@ -136,9 +134,9 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 90.0, 70.0, 133.0, 23.0 ],
+					"patching_rect" : [ 90.0, 70.0, 98.0, 23.0 ],
 					"style" : "",
-					"text" : "udpreceive @port 7432"
+					"text" : "udpreceive 7432"
 				}
 
 			}

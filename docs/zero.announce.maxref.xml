@@ -68,6 +68,7 @@
 
 	<seealsolist>
 		<seealso name='zero.browse' />
+		<seealso name='zero.resolve' />
 		<seealso name='udpsend' />
 		<seealso name='udpreceive' />
 	</seealsolist>

@@ -13,7 +13,7 @@ void DNSSD_API dns_service_browse_reply(DNSServiceRef, DNSServiceFlags, uint32_t
 class dns_service_browser {
 public:
 
-	dns_service_browser(zero_base& owner, const symbol& type, const symbol& domain)
+	dns_service_browser(zero_base* owner, const symbol& type, const symbol& domain)
 	: m_owner	{ owner }
 	, m_type	{ type }
 	, m_domain	{ domain }
@@ -38,13 +38,13 @@ public:
 
 	void handle_reply(const DNSServiceFlags flags, const char* name, const char* type, const char* domain) {
 		if (flags & kDNSServiceFlagsAdd) {
-			dns_service match(domain, type, name);
+			dns_service match(m_owner, domain, type, name);
 			auto iter = std::find(m_services.begin(), m_services.end(), match);
 			if (iter == m_services.end()) // only add to the list if we don't have it already
-				m_services.push_back( dns_service(domain, type, name) );
+				m_services.push_back( dns_service(m_owner, domain, type, name) );
 		}
 		else {
-			dns_service match(domain, type, name);
+			dns_service match(m_owner, domain, type, name);
 			auto iter = std::find(m_services.begin(), m_services.end(), match);
 			if (iter != m_services.end())
 				m_services.erase(iter);
@@ -57,7 +57,7 @@ public:
 			atoms as(m_services.size());
 			for (auto i=0; i<m_services.size(); ++i)
 				as[i] = m_services[i].name();
-			m_owner.update(as);
+			m_owner->update(as);
 		}
 	}
 
@@ -90,7 +90,7 @@ public:
 	}
 
 private:
-	zero_base&					m_owner;
+	zero_base*					m_owner;
 	symbol						m_type;
 	symbol						m_domain;
 	DNSServiceRef				m_client = nullptr;
@@ -118,10 +118,10 @@ public:
 	MIN_DESCRIPTION { "Browse available services published using ZeroConf" };
 	MIN_TAGS		{ "network" };
 	MIN_AUTHOR		{ "Cycling '74" };
-	MIN_RELATED		{ "zero.announce, udpsend, udpreceive" };
+	MIN_RELATED		{ "zero.announce, zero.resolve, udpsend, udpreceive" };
 	
-	inlet<>		input	{ this, "(bang) refresh the listing of services" };
-	outlet<>	output	{ this, "(list) a list of available services" };
+	inlet<>											input	{ this, "(bang) refresh the listing of services" };
+	outlet<thread_check::main, thread_action::fifo>	output	{ this, "(list) a list of available services" };
 
 
 	zero_browse(const atoms& = {}) {
@@ -150,7 +150,7 @@ public:
 		MIN_FUNCTION {
 			if (m_dns_service_browser)
 				delete m_dns_service_browser;
-			m_dns_service_browser = new dns_service_browser(*this, type, domain);
+			m_dns_service_browser = new dns_service_browser(this, type, domain);
 			poll.delay(k_poll_rate);
 			return {};
 		}
@@ -179,8 +179,12 @@ public:
 	};
 
 
-	void update(const atoms& args) {
+	virtual void update(const atoms& args) override {
 		output.send(args);
+	}
+
+	virtual void error(const char* message) override {
+		cerr << message << endl;
 	}
 
 private:
