@@ -21,7 +21,8 @@ public:
 };
 
 
-void DNSSD_API dns_service_resolve_reply(DNSServiceRef, DNSServiceFlags, uint32_t, DNSServiceErrorType, const char*, const char*, uint16_t, uint16_t, const unsigned char*, void* context);
+void DNSSD_API dns_service_browse_reply(DNSServiceRef, DNSServiceFlags, uint32_t, DNSServiceErrorType, const char*, const char*, const char*, void*);
+void DNSSD_API dns_service_resolve_reply(DNSServiceRef, DNSServiceFlags, uint32_t, DNSServiceErrorType, const char*, const char*, uint16_t, uint16_t, const unsigned char*, void*);
 
 
 class dns_service {
@@ -36,7 +37,7 @@ public:
 	{}
 
 
-	~dns_service() {
+	virtual ~dns_service() {
 		if (m_client)
 			DNSServiceRefDeallocate(m_client);
 	}
@@ -131,7 +132,7 @@ public:
 	}
 
 
-private:
+protected:
 	zero_base*		m_owner;
 	symbol			m_domain;
 	symbol			m_type;
@@ -141,18 +142,68 @@ private:
 };
 
 
+class dns_service_browser : public dns_service {
+public:
 
-void DNSSD_API dns_service_resolve_reply(DNSServiceRef client,
-									DNSServiceFlags flags,
-									uint32_t index,
-									DNSServiceErrorType err,
-									const char* fullname,
-									const char* hosttarget,
-									uint16_t port,
-									uint16_t txtLen,
-									const unsigned char* txtRecord,
-									void* context)
+	dns_service_browser(zero_base* owner, const symbol& domain, const symbol& type)
+	: dns_service { owner, domain, type, symbol("##browser##") }
+	{
+		auto a_type = type.c_str();
+		auto a_domain = domain.c_str();
+		auto err = DNSServiceBrowse(&m_client, 0, kDNSServiceInterfaceIndexAny, a_type, a_domain, dns_service_browse_reply, this);
+
+		if (!m_client || err != kDNSServiceErr_NoError) {
+			if (m_client)
+				DNSServiceRefDeallocate(m_client);
+				m_client = nullptr;
+		}
+	}
+
+
+	void handle_reply(const DNSServiceFlags flags, const char* name, const char* type, const char* domain) {
+		if (flags & kDNSServiceFlagsAdd) {
+			dns_service match(m_owner, domain, type, name);
+			auto iter = std::find(m_services.begin(), m_services.end(), match);
+			if (iter == m_services.end()) // only add to the list if we don't have it already
+				m_services.push_back( dns_service(m_owner, domain, type, name) );
+		}
+		else {
+			dns_service match(m_owner, domain, type, name);
+			auto iter = std::find(m_services.begin(), m_services.end(), match);
+			if (iter != m_services.end())
+				m_services.erase(iter);
+		}
+
+		if (flags & kDNSServiceFlagsMoreComing)
+			; // wait for the rest of the replies...
+		else {
+			//zero_browse_update(m_owner);
+			atoms as(m_services.size());
+			for (auto i=0; i<m_services.size(); ++i)
+				as[i] = m_services[i].name();
+			m_owner->update(as);
+		}
+	}
+
+
+private:
+	std::vector<dns_service>	m_services;
+};
+
+
+void DNSSD_API dns_service_browse_reply(DNSServiceRef client, DNSServiceFlags flags, uint32_t index, DNSServiceErrorType err,
+										const char *name, const char *type, const char *domain, void *context)
+{
+	auto self = (dns_service_browser*)context;
+	self->handle_reply(flags, name, type, domain);
+}
+
+
+void DNSSD_API dns_service_resolve_reply(DNSServiceRef client, DNSServiceFlags flags, uint32_t index, DNSServiceErrorType err,
+										 const char* fullname, const char* hosttarget, uint16_t port,
+										 uint16_t txtLen, const unsigned char* txtRecord, void* context)
 {
 	auto self = (dns_service*)context;
 	self->handle_resolve(err, port, hosttarget);
 }
+

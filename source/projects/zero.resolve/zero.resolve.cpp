@@ -91,7 +91,6 @@ public:
 
 private:
 	std::unique_ptr<dns_service> m_dns_service;
-
 };
 
 

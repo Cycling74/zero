@@ -7,108 +7,6 @@
 #include "../zero.h"
 
 
-void DNSSD_API dns_service_browse_reply(DNSServiceRef, DNSServiceFlags, uint32_t, DNSServiceErrorType, const char*, const char*, const char*, void*);
-
-
-class dns_service_browser {
-public:
-
-	dns_service_browser(zero_base* owner, const symbol& type, const symbol& domain)
-	: m_owner	{ owner }
-	, m_type	{ type }
-	, m_domain	{ domain }
-	{
-		auto a_type = type.c_str();
-		auto a_domain = domain.c_str();
-		auto err = DNSServiceBrowse(&m_client, 0, kDNSServiceInterfaceIndexAny, a_type, a_domain, dns_service_browse_reply, this);
-
-		if (!m_client || err != kDNSServiceErr_NoError) {
-			if (m_client)
-				DNSServiceRefDeallocate(m_client);
-			m_client = NULL;
-		}
-	}
-
-
-	~dns_service_browser() {
-		if (m_client)
-			DNSServiceRefDeallocate(m_client);
-	}
-
-
-	void handle_reply(const DNSServiceFlags flags, const char* name, const char* type, const char* domain) {
-		if (flags & kDNSServiceFlagsAdd) {
-			dns_service match(m_owner, domain, type, name);
-			auto iter = std::find(m_services.begin(), m_services.end(), match);
-			if (iter == m_services.end()) // only add to the list if we don't have it already
-				m_services.push_back( dns_service(m_owner, domain, type, name) );
-		}
-		else {
-			dns_service match(m_owner, domain, type, name);
-			auto iter = std::find(m_services.begin(), m_services.end(), match);
-			if (iter != m_services.end())
-				m_services.erase(iter);
-		}
-
-		if (flags & kDNSServiceFlagsMoreComing)
-			; // wait for the rest of the replies...
-		else {
-			//zero_browse_update(m_owner);
-			atoms as(m_services.size());
-			for (auto i=0; i<m_services.size(); ++i)
-				as[i] = m_services[i].name();
-			m_owner->update(as);
-		}
-	}
-
-
-	bool poll() {
-		if (!m_client)
-			return true; // fail silently so we don't continue to poll
-
-		DNSServiceErrorType	err = kDNSServiceErr_NoError;
-		int					dns_sd_fd = DNSServiceRefSockFD(m_client);
-		int					nfds = dns_sd_fd + 1;
-		timeval				tv {0, 1000};	// 1 millisecond timeout
-		fd_set				readfds {};
-
-		FD_SET(dns_sd_fd, &readfds);
-
-		int result = select(nfds, &readfds, nullptr, nullptr, &tv);
-		if (result > 0) {
-			DNSServiceErrorType err = kDNSServiceErr_NoError;
-			if (FD_ISSET(dns_sd_fd, &readfds))
-				err = DNSServiceProcessResult(m_client);
-			if (err)
-				fprintf(stderr, "DNSServiceProcessResult returned %d\n", err);
-			return true;
-		}
-		else {
-			err = kDNSServiceErr_NoError;
-			return false;
-		}
-	}
-
-private:
-	zero_base*					m_owner;
-	symbol						m_type;
-	symbol						m_domain;
-	DNSServiceRef				m_client = nullptr;
-	std::vector<dns_service>	m_services;
-	std::thread					m_thread;
-};
-
-
-
-void DNSSD_API dns_service_browse_reply(DNSServiceRef client, DNSServiceFlags flags, uint32_t index, DNSServiceErrorType err,
-										const char *name, const char *type, const char *domain, void *context)
-{
-	auto self = (dns_service_browser*)context;
-	self->handle_reply(flags, name, type, domain);
-}
-
-
-
 class zero_browse : public object<zero_browse>, public zero_base {
 public:
 
@@ -139,7 +37,7 @@ public:
 
 	message<> bang { this, "bang", "Post the greeting.",
 		MIN_FUNCTION {
-			m_dns_service_browser = std::make_unique<dns_service_browser>(this, type, domain);
+			m_dns_service_browser = std::make_unique<dns_service_browser>(this, domain, type);
 			poll.delay(k_poll_rate);
 			return {};
 		}
@@ -186,7 +84,6 @@ public:
 
 private:
 	std::unique_ptr<dns_service_browser> m_dns_service_browser;
-
 };
 
 
