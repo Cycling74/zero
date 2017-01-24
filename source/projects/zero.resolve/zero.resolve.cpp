@@ -7,9 +7,6 @@
 #include "../zero.h"
 
 class zero_resolve : public object<zero_resolve>, public zero_base {
-private:
-	bool m_initialized { false };
-
 public:
 
 	MIN_DESCRIPTION { "Resolve a ZeroConf service name to it's IP address and port" };
@@ -20,8 +17,8 @@ public:
 	inlet<>		input	{ this, "(bang) refresh the listing of services" };
 	outlet<>	output	{ this, "(list) a list of available services" };
 
+
 	zero_resolve(const atoms& = {}) {
-		m_initialized = true;
 		c74::max::object_attach_byptr_register(maxobj(), maxobj(), k_sym_box);
 		bang();
 	}

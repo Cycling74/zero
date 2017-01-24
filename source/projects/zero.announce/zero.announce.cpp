@@ -7,9 +7,6 @@
 #include "../zero.h"
 
 class zero_announce : public object<zero_announce>, public zero_base {
-private:
-	bool m_initialized { false };
-
 public:
 
 	MIN_DESCRIPTION { "Publish an available service using ZeroConf" };
@@ -21,7 +18,6 @@ public:
 
 
 	zero_announce(const atoms& = {}) {
-		m_initialized = true;
 		c74::max::object_attach_byptr_register(maxobj(), maxobj(), k_sym_box);
 		bang();
 	}

@@ -110,9 +110,6 @@ void DNSSD_API dns_service_browse_reply(DNSServiceRef client, DNSServiceFlags fl
 
 
 class zero_browse : public object<zero_browse>, public zero_base {
-private:
-	bool m_initialized { false };
-
 public:
 
 	MIN_DESCRIPTION { "Browse available services published using ZeroConf" };
@@ -125,7 +122,6 @@ public:
 
 
 	zero_browse(const atoms& = {}) {
-		m_initialized = true;
 		c74::max::object_attach_byptr_register(maxobj(), maxobj(), k_sym_box);
 		bang();
 	}
