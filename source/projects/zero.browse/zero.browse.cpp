@@ -120,8 +120,8 @@ public:
 	MIN_AUTHOR		{ "Cycling '74" };
 	MIN_RELATED		{ "zero.announce, zero.resolve, udpsend, udpreceive" };
 	
-	inlet<>											input	{ this, "(bang) refresh the listing of services" };
-	outlet<thread_check::main, thread_action::fifo>	output	{ this, "(list) a list of available services" };
+	inlet<>		input	{ this, "(bang) refresh the listing of services" };
+	outlet<>	output	{ this, "(list) a list of available services" };
 
 
 	zero_browse(const atoms& = {}) {
@@ -167,13 +167,21 @@ public:
 	};
 
 
-	timer poll { this,
+	queue q { this,
 		MIN_FUNCTION {
 			if (m_dns_service_browser) {
 				auto success = m_dns_service_browser->poll();
 				if (!success)
 					poll.delay(k_poll_rate);
 			}
+			return {};
+		}
+	};
+
+
+	timer poll { this,
+		MIN_FUNCTION {
+			q.set();
 			return {};
 		}
 	};
