@@ -131,11 +131,6 @@ public:
 	}
 
 
-	~zero_browse() {
-		delete m_dns_service_browser;
-	}
-
-
 	attribute<symbol> type { this, "type", "_http._tcp",
 		description { "Type of service. " }
 	};
@@ -148,9 +143,7 @@ public:
 
 	message<> bang { this, "bang", "Post the greeting.",
 		MIN_FUNCTION {
-			if (m_dns_service_browser)
-				delete m_dns_service_browser;
-			m_dns_service_browser = new dns_service_browser(this, type, domain);
+			m_dns_service_browser = std::make_unique<dns_service_browser>(this, type, domain);
 			poll.delay(k_poll_rate);
 			return {};
 		}
@@ -162,7 +155,7 @@ public:
 			symbol msg = args[2];
 			if (msg == "attr_modified")
 				bang();
-			return { 0 };
+			return { c74::max::MAX_ERR_NONE };
 		}
 	};
 
@@ -196,7 +189,7 @@ public:
 	}
 
 private:
-	dns_service_browser* m_dns_service_browser = nullptr;
+	std::unique_ptr<dns_service_browser> m_dns_service_browser;
 
 };
 

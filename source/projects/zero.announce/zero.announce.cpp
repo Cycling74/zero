@@ -27,11 +27,6 @@ public:
 	}
 
 
-	~zero_announce() {
-		delete m_dns_service;
-	}
-
-
 	attribute<symbol> name { this, "name", "Zero",
 		description{ "Name of the service to publish. " }
 	};
@@ -54,9 +49,7 @@ public:
 
 	message<> bang { this, "bang", "Post the greeting.",
 		MIN_FUNCTION {
-			if (m_dns_service)
-				delete m_dns_service;
-			m_dns_service = new dns_service(this, domain, type, name, port);
+			m_dns_service = std::make_unique<dns_service>(this, domain, type, name, port);
 			m_dns_service->publish();
 			return {};
 		}
@@ -78,7 +71,7 @@ public:
 
 
 private:
-	dns_service* m_dns_service = nullptr;
+	std::unique_ptr<dns_service> m_dns_service;
 
 };
 

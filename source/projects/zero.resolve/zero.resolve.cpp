@@ -20,17 +20,10 @@ public:
 	inlet<>		input	{ this, "(bang) refresh the listing of services" };
 	outlet<>	output	{ this, "(list) a list of available services" };
 
-	// TODO: make the outlet thread_action::last
-
 	zero_resolve(const atoms& = {}) {
 		m_initialized = true;
 		c74::max::object_attach_byptr_register(maxobj(), maxobj(), k_sym_box);
 		bang();
-	}
-
-
-	~zero_resolve() {
-		delete m_dns_service;
 	}
 
 
@@ -51,9 +44,7 @@ public:
 
 	message<> bang { this, "bang", "Post the greeting.",
 		MIN_FUNCTION {
-			if (m_dns_service)
-				delete m_dns_service;
-			m_dns_service = new dns_service(this, domain, type, name);
+			m_dns_service = std::make_unique<dns_service>(this, domain, type, name);
 			m_dns_service->resolve();
 			poll.delay(k_poll_rate);
 			return {};
@@ -102,7 +93,7 @@ public:
 	virtual void error(const char* message) override {}
 
 private:
-	dns_service* m_dns_service = nullptr;
+	std::unique_ptr<dns_service> m_dns_service;
 
 };
 
