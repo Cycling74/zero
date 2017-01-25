@@ -11,6 +11,8 @@ To get started, use the Max **Package Manager** or [download](https://s3-us-west
 
 After installing, open the menu item **Extras > Zero-Configuration Networking** to be guided through the package.
 
+Note: **Windows Users** may need to install [Apple Bonjour Print Services](https://support.apple.com/kb/DL999?viewlocale=en_US&locale=en_US).
+
 ## Building
 
 If you wish to build the software yourself from source-code, you must first have [CMake](https://cmake.org/download/) and Xcode 7/8 or Visual Studio 2015 installed.
