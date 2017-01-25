@@ -52,21 +52,13 @@ public:
 	};
 
 
-	queue q { this,
+	timer poll { this, true,
 		MIN_FUNCTION {
 			if (m_dns_service_browser) {
 				auto success = m_dns_service_browser->poll();
 				if (!success)
 					poll.delay(k_poll_rate);
-			}
-			return {};
-		}
-	};
-
-
-	timer poll { this,
-		MIN_FUNCTION {
-			q.set();
+					}
 			return {};
 		}
 	};
