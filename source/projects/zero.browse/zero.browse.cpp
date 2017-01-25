@@ -19,7 +19,6 @@ public:
 
 
 	zero_browse(const atoms& = {}) {
-		c74::max::object_attach_byptr_register(maxobj(), maxobj(), k_sym_box);
 		bang();
 	}
 
