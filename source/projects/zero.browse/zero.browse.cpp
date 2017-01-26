@@ -1,7 +1,7 @@
-/// @file	
-///	@copyright	Copyright (c) 2017, Cycling '74
+/// @file
+/// @copyright	Copyright (c) 2017, Cycling '74
 /// @author		Timothy Place
-///	@license	Usage of this file and its contents is governed by the MIT License
+/// @license	Usage of this file and its contents is governed by the MIT License
 
 #include "../zero.h"
 
@@ -58,7 +58,7 @@ public:
 				auto success = m_dns_service_browser->poll();
 				if (!success)
 					poll.delay(k_poll_rate);
-					}
+			}
 			return {};
 		}
 	};

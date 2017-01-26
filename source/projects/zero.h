@@ -1,7 +1,7 @@
 /// @file
-///	@copyright	Copyright (c) 2017, Cycling '74
+/// @copyright	Copyright (c) 2017, Cycling '74
 /// @author		Timothy Place
-///	@license	Usage of this file and its contents is governed by the MIT License
+/// @license	Usage of this file and its contents is governed by the MIT License
 
 #pragma once
 
@@ -176,7 +176,6 @@ public:
 		if (flags & kDNSServiceFlagsMoreComing)
 			; // wait for the rest of the replies...
 		else {
-			//zero_browse_update(m_owner);
 			atoms as(m_services.size());
 			for (auto i=0; i<m_services.size(); ++i)
 				as[i] = m_services[i].name();
