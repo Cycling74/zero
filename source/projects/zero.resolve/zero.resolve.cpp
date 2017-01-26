@@ -13,7 +13,7 @@ public:
 	MIN_AUTHOR		{ "Cycling '74" };
 	MIN_RELATED		{ "zero.announce, zero.browse, udpsend, udpreceive" };
 	
-	inlet<>		input	{ this, "(bang) refresh the listing of services" };
+	inlet<>		input	{ this, "(bang) refresh the address and port for the named service" };
 	outlet<>	output	{ this, "(list) a list of available services" };
 
 
@@ -23,21 +23,21 @@ public:
 
 
 	attribute<symbol> name { this, "name", "Zero",
-		description{ "Name of the service to publish. " }
+		description{ "Name of the service to publish." }
 	};
 
 
 	attribute<symbol> type { this, "type", "_http._tcp",
-		description { "Type of service. " }
+		description { "Type of service." }
 	};
 
 
 	attribute<symbol> domain { this, "domain", "local",
-		description { "Domain for the service. The name 'local' is reserved for ZeroConf usage. " }
+		description { "Domain for the service. The name 'local' is reserved for ZeroConf usage." }
 	};
 
 
-	message<> bang { this, "bang", "Post the greeting.",
+	message<> bang { this, "bang", "Refresh the address and port for the named service.",
 		MIN_FUNCTION {
 			m_dns_service = std::make_unique<dns_service>(this, domain, type, name);
 			m_dns_service->resolve();

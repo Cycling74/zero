@@ -30,8 +30,8 @@
 	<methodlist>
 
 		<method name='bang'>
-			<digest>Post the greeting</digest>
-			<description>Post the greeting. </description>
+			<digest>Publish the service</digest>
+			<description>Publish the service. </description>
 		</method>
 
 	</methodlist>

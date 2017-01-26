@@ -24,16 +24,16 @@ public:
 
 
 	attribute<symbol> type { this, "type", "_http._tcp",
-		description { "Type of service. " }
+		description { "Type of service." }
 	};
 
 
 	attribute<symbol> domain { this, "domain", "local",
-		description { "Domain for the service. The name 'local' is reserved for ZeroConf usage. " }
+		description { "Domain for the service. The name 'local' is reserved for ZeroConf usage." }
 	};
 
 
-	message<> bang { this, "bang", "Post the greeting.",
+	message<> bang { this, "bang", "Refresh the listing of services.",
 		MIN_FUNCTION {
 			m_dns_service_browser = std::make_unique<dns_service_browser>(this, domain, type);
 			poll.delay(k_poll_rate);

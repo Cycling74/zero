@@ -30,8 +30,8 @@
 	<methodlist>
 
 		<method name='bang'>
-			<digest>Post the greeting</digest>
-			<description>Post the greeting. </description>
+			<digest>Refresh the address and port for the named service</digest>
+			<description>Refresh the address and port for the named service. </description>
 		</method>
 
 	</methodlist>
