@@ -52,3 +52,15 @@ artifacts:
     path: '*.zip'
   - name: Log files
     path: '*.log'
+
+deploy:
+  provider: S3
+  access_key_id: AKIAIWE3SI2TMXC5AJBA
+  secret_access_key:
+    secure: PXJw4guo+r6IdUYK6t8rW01Gi0mWHPmyH+Pa6UmZePtgV1iXaZYoO2R9CgoCQ80y
+  bucket: cycling74-ci
+  folder: $(APPVEYOR_PROJECT_NAME)
+  region: us-west-2
+  set_public: true
+  artifact: "$(APPVEYOR_PROJECT_NAME)-win-$(platform)-$(SHORT_COMMIT).zip"
+  
