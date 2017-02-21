@@ -16,7 +16,7 @@ public:
 	inlet<>		input	{ this, "(bang) re-publish the service" };
 
 
-	zero_announce(const atoms& = {}) {
+	zero_announce() {
 		bang();
 	}
 
@@ -52,8 +52,10 @@ public:
 
 	message<> notify { this, "notify",
 		MIN_FUNCTION {
-			symbol msg = args[2];
-			if (msg == "attr_modified")
+			symbol	msg = args[2];
+			void*	sender = args[3];
+
+			if (sender == maxobj() && msg == "attr_modified")
 				bang();
 			return { 0 };
 		}

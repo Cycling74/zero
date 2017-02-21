@@ -18,7 +18,7 @@ public:
 	outlet<>	output	{ this, "(list) a list of available services" };
 
 
-	zero_browse(const atoms& = {}) {
+	zero_browse() {
 		bang();
 	}
 
@@ -44,8 +44,10 @@ public:
 
 	message<> notify { this, "notify",
 		MIN_FUNCTION {
-			symbol msg = args[2];
-			if (msg == "attr_modified")
+			symbol	msg = args[2];
+			void*	sender = args[3];
+
+			if (sender == maxobj() && msg == "attr_modified")
 				bang();
 			return { c74::max::MAX_ERR_NONE };
 		}

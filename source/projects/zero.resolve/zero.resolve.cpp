@@ -17,7 +17,7 @@ public:
 	outlet<>	output	{ this, "(list) a list of available services" };
 
 
-	zero_resolve(const atoms& = {}) {
+	zero_resolve() {
 		bang();
 	}
 
@@ -49,8 +49,10 @@ public:
 
 	message<> notify { this, "notify",
 		MIN_FUNCTION {
-			symbol msg = args[2];
-			if (msg == "attr_modified")
+			symbol	msg = args[2];
+			void*	sender = args[3];
+
+			if (sender == maxobj() && msg == "attr_modified")
 				bang();
 			return { 0 };
 		}
