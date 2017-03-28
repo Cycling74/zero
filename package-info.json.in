@@ -2,7 +2,7 @@
 	"author" : "Cycling '74",
 	"description" : "Zero-configuration networking for Max.",
 	"homepatcher" : "zero.resolve.maxhelp",
-	"max_version_min" : "7.1",
+	"max_version_min" : "7.1", "max_version_max" : "none",
 	"max_version_max" : "none",
 	"name" : "@C74_PACKAGE_NAME@",
 	"os" : {
