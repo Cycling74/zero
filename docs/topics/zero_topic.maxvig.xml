@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet href="_c74_vig.xsl" type="text/xsl"?>
+<vignette name="Zero Package Overview" package="Zero">
+  <metadatalist>
+    <metadata name="author">Cycling '74</metadata>
+    <metadata name="tag">zero</metadata>
+    <metadata name="tag">networking</metadata>
+  </metadatalist>
+
+
+  <h1>Zero Package</h1>
+  <p>
+	The Zero package is a collection of objects for
+    <a href="https://en.wikipedia.org/wiki/Zero-configuration_networking">Zero Configuration Networking</a>
+    also known as ZeroConf or Bonjour.
+    It allows you to find network services and resolve their addresses automatically as well as publish
+    your own network services.
+	This pairs nicely with the standard Max objects <o>udpsend</o> and <o>udpreceive</o>.
+  </p>
+
+
+	<h2>The Zero Objects</h2>
+  <ul>
+    <li><openfilelink filename="zero.announce.maxhelp">zero.announce</openfilelink> - Publish information about a network service for others to find.</li>
+    <li><openfilelink filename="zero.browse.maxhelp">zero.browse</openfilelink> - Search for existing network services.</li>
+    <li><openfilelink filename="zero.resolve.maxhelp">zero.resolve</openfilelink> - Return the address information for a named network service.</li>
+  </ul>
+
+
+  <cr/>
+
+
+  <seealsolist>
+		<!-- <seealso name="timing_events_topic" module="topics" type="vignette" />	-->
+		<seealso name="udpsend" />
+		<seealso name="udpreceive" />
+  </seealsolist>
+
+</vignette>
