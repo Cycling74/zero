@@ -41,6 +41,11 @@
 
 	<attributelist>
 
+		<attribute name='port' get='1' set='1' type='long' size='1' >
+			<digest>Network port on which the service is provided</digest>
+			<description>Network port on which the service is provided. </description>
+		</attribute>
+
 		<attribute name='domain' get='1' set='1' type='symbol' size='1' >
 			<digest>Domain for the service</digest>
 			<description>Domain for the service. The name 'local' is reserved for ZeroConf usage. </description>
@@ -49,11 +54,6 @@
 		<attribute name='type' get='1' set='1' type='symbol' size='1' >
 			<digest>Type of service</digest>
 			<description>Type of service. </description>
-		</attribute>
-
-		<attribute name='port' get='1' set='1' type='long' size='1' >
-			<digest>Network port on which the service is provided</digest>
-			<description>Network port on which the service is provided. </description>
 		</attribute>
 
 		<attribute name='name' get='1' set='1' type='symbol' size='1' >
