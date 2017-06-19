@@ -15,7 +15,7 @@ Note: **Windows Users** may need to install [Apple Bonjour Print Services](https
 
 ## Building
 
-If you wish to build the software yourself from source-code, you must first have [CMake](https://cmake.org/download/) and Xcode 7/8 or Visual Studio 2015 installed.
+If you wish to build the software yourself from source-code, you must first have [CMake](https://cmake.org/download/) and Xcode 7/8 or Visual Studio 2017 installed.
 
 0. Clone the code from Github, or download a zip and unpack it into a folder.
 1. In the Terminal or Console app of your choice, change directories (cd) into the folder you created in step 0.
