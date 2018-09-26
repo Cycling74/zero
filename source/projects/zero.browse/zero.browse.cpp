@@ -54,7 +54,7 @@ public:
 	};
 
 
-	timer poll { this, timer::options::defer_delivery,
+	timer<timer_options::defer_delivery> poll { this,
 		MIN_FUNCTION {
 			if (m_dns_service_browser) {
 				auto success = m_dns_service_browser->poll();
