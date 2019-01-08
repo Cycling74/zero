@@ -9,7 +9,6 @@ configuration: Release
 shallow_clone: false
 
 platform:
-  - x86
   - x64
 
 install:
