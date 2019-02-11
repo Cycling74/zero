@@ -5,7 +5,7 @@
 
 Zero-configuration networking for Max.
 
-To get started, use the Max **Package Manager** or [download](https://s3-us-west-1.amazonaws.com/cycling74-ci-public/index.html?prefix=zero/) the latest builds directly.
+To get started, use the Max **Package Manager** or build using the instructions below.
 
 ## Getting Started
 

@@ -58,11 +58,11 @@ artifacts:
 
 deploy:
   provider: S3
-  access_key_id: AKIAJ4NHY5NBHT76DRGA
+  access_key_id: AKIAIWE3SI2TMXC5AJBA
   secret_access_key:
-    secure: 8v5xXOB5BONI4CoU5t08nkRyDMbV2TQKDvKBNrfFhHFVwHxa2v8l3FeoeWequCeT
-  bucket: cycling74-ci-public
+    secure: PXJw4guo+r6IdUYK6t8rW01Gi0mWHPmyH+Pa6UmZePtgV1iXaZYoO2R9CgoCQ80y
+  bucket: cycling74-ci
   folder: $(APPVEYOR_PROJECT_NAME)
-  region: us-west-1
+  region: us-west-2
   set_public: true
   artifact: "$(APPVEYOR_PROJECT_NAME)-win-$(platform)-$(SHORT_COMMIT).zip"
