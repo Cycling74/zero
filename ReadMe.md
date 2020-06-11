@@ -1,6 +1,5 @@
 # Zero
-[![Build Status](https://travis-ci.com/Cycling74/zero.svg?token=GAmnsUEo9aYasSF5pz8q&branch=master)](https://travis-ci.com/Cycling74/zero) [![Build status](https://ci.appveyor.com/api/projects/status/fv9ln8f036vnju3o/branch/master?svg=true)](https://ci.appveyor.com/project/c74/zero/branch/master)
-
+![CI](https://github.com/Cycling74/link/workflows/CI/badge.svg)
 
 
 Zero-configuration networking for Max.
