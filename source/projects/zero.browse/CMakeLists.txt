@@ -32,15 +32,16 @@ add_library(
 
 
 if (WIN32)
-	target_link_libraries(${PROJECT_NAME} "wsock32.lib")
-	target_link_libraries(${PROJECT_NAME} "ws2_32.lib")
-	target_link_libraries(${PROJECT_NAME} "Iphlpapi.lib")
+	target_link_libraries(${PROJECT_NAME} PUBLIC wsock32)
+	target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
+	target_link_libraries(${PROJECT_NAME} PUBLIC Iphlpapi)
 
 	if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-		target_link_libraries(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/../bonjour_sdk/x64/dnssd.lib")
+		find_library(DNSSD_LIBRARY "dnssd" HINTS "${CMAKE_CURRENT_SOURCE_DIR}/../bonjour_sdk/x64")
 	else ()
-		target_link_libraries(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/../bonjour_sdk/Win32/dnssd.lib")
+		find_library(DNSSD_LIBRARY "dnssd" HINTS "${CMAKE_CURRENT_SOURCE_DIR}/../bonjour_sdk/Win32")
 	endif ()
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${DNSSD_LIBRARY})
 endif ()
 
 

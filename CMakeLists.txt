@@ -1,6 +1,5 @@
-cmake_minimum_required(VERSION 3.0)
-
-
+cmake_minimum_required(VERSION 3.10)
+project(Zero)
 
 if (${CMAKE_GENERATOR} MATCHES "Xcode")
  		if (${XCODE_VERSION} VERSION_LESS 7)
