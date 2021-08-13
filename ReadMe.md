@@ -1,6 +1,5 @@
 # Zero
-![CI](https://github.com/Cycling74/link/workflows/CI/badge.svg)
-
+![CI](https://github.com/Cycling74/zero/actions/workflows/test.yml/badge.svg)
 
 Zero-configuration networking for Max.
 
