@@ -5,6 +5,10 @@
 
 #pragma once
 
+#ifdef WIN_VERSION
+	#include <WinSock2.h>
+#endif
+
 #include "c74_min.h"
 #include "dns_sd.h"
 
